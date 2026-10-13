@@ -1,0 +1,38 @@
+.layout-view{display:flex;align-items:center;gap:7px;flex:none;color:#b9d2d3;font-size:12px}.layout-view select{color:#e2eeeb;background:#20363e;border:1px solid #49666b;border-radius:8px;padding:8px 5px;min-height:36px;width:90px;cursor:pointer}.layout-view select:focus-visible{outline:2px solid #9ae3c7;outline-offset:3px}
+
+:root[data-layout=mobile] .topbar{gap:6px;padding-left:8px;padding-right:8px}
+
+:root[data-layout=mobile] .topbar .brand{min-width:0;flex:1}
+
+:root[data-layout=mobile] .brand>div{min-width:0}
+
+:root[data-layout=mobile] .brand h1{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+:root[data-layout=mobile] .layout-view>span{display:none}
+
+:root[data-layout=mobile] .layout-view select{width:80px;min-height:44px;font-size:12px}
+
+:root[data-layout=mobile] .header-actions{flex:none;gap:4px}
+
+:root[data-layout=mobile] .header-actions .button{padding:9px 6px}
+
+:root[data-layout=mobile] body:not(.automations-active):not(.buttons-active):not(.device-sheet-active) .topbar{margin-bottom:24px}
+
+:root[data-layout=mobile] .workspace{padding-top:0}
+
+:root[data-layout=mobile] .library,:root[data-layout=mobile] .inspector{inset:0}
+
+:root[data-layout-mode=desktop] body{min-width:1152px}
+
+@media(max-width:850px){
+
+  :root[data-layout-mode=desktop] .layout-view{position:fixed;top:8px;left:calc(100vw - 108px);z-index:50;background:#15262d;padding:3px;border-radius:10px;box-shadow:0 3px 14px #0008}
+
+  :root[data-layout-mode=desktop] .layout-view>span{display:none}
+
+  :root[data-layout-mode=desktop] .layout-view select{min-height:44px}
+
+}
+
+@media print{.layout-view{display:none!important}}
+

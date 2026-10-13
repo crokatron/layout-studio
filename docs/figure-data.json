@@ -1,0 +1,111 @@
+[
+  {
+    "boxes": [
+      {
+        "h": 46,
+        "selector": "#search",
+        "text": "Search the library, then click an item to add it to the selected room.",
+        "title": "Find furniture",
+        "w": 222,
+        "x": 11,
+        "y": 286.1875
+      },
+      {
+        "h": 530.59375,
+        "selector": "#selection-panel",
+        "text": "Edit dimensions, rotation and mirror options for the selected sofa.",
+        "title": "Size and orient it",
+        "w": 231,
+        "x": 1795,
+        "y": 180
+      },
+      {
+        "h": 44,
+        "selector": "#save-project",
+        "text": "Export JSON preserves the layout; Export image creates only a picture.",
+        "title": "Keep an editable copy",
+        "w": 102.609375,
+        "x": 1915.390625,
+        "y": 54
+      }
+    ],
+    "height": 1408,
+    "width": 2055,
+    "title": "Actual tool · controls at a glance",
+    "caption": "Actual application screenshot. Numbered boxes point to the controls described below. The plan and devices are fictional.",
+    "key": "layout-studio"
+  },
+  {
+    "boxes": [
+      {
+        "h": 44,
+        "selector": "#add-wall-dimension",
+        "text": "Between walls lets the gap drive the geometry; select reference and moving wall.",
+        "title": "Choose two facing walls",
+        "w": 124.453125,
+        "x": 392.3125,
+        "y": 301
+      },
+      {
+        "h": 44,
+        "selector": "#move-labels",
+        "text": "Move names repositions room text without changing walls.",
+        "title": "Move the label only",
+        "w": 103.375,
+        "x": 724.859375,
+        "y": 301
+      },
+      {
+        "h": 1228,
+        "selector": "#selection-panel",
+        "text": "Lock room dimensions before changing neighbouring geometry. Resolve Overdefined conflicts instead of forcing them.",
+        "title": "Protect a finished room",
+        "w": 216,
+        "x": 1795,
+        "y": 180
+      }
+    ],
+    "height": 1408,
+    "width": 2055,
+    "title": "Actual tool · controls at a glance",
+    "caption": "Actual application screenshot. Numbered boxes point to the controls described below. The plan and devices are fictional.",
+    "key": "layout-dimensions"
+  },
+  {
+    "boxes": [
+      {
+        "h": 52,
+        "selector": "#room",
+        "text": "Choose another room or drag its marker on the plan.",
+        "title": "Move the selected device",
+        "w": 260,
+        "x": 318,
+        "y": 353.890625
+      },
+      {
+        "h": 59.1875,
+        "selector": "#toggle",
+        "text": "Toggle the lamp and watch its dummy HA state change.",
+        "title": "Try a device action",
+        "w": 260,
+        "x": 318,
+        "y": 476.078125
+      },
+      {
+        "h": 577.6875,
+        "selector": "#result",
+        "text": "The friendly name, room, position and state update together in dummy HA.",
+        "title": "See the other side",
+        "w": 517.078125,
+        "x": 1228.90625,
+        "y": 206.890625
+      }
+    ],
+    "height": 1408,
+    "width": 2055,
+    "key": "simulation",
+    "title": "Try the working offline example",
+    "caption": "Screenshot of this project’s interactive demo. Side-by-side services are explicitly simulated.",
+    "cropHeight": 825.578125
+  }
+]

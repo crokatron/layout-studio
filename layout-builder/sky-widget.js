@@ -1,0 +1,58 @@
+/* Shared, offline home astronomy and an explicitly enabled phone compass. */
+
+(()=>{'use strict';
+
+const safe=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+class HomeSkyWidget extends HTMLElement{
+
+ constructor(){super();this.attachShadow({mode:'open'});this.date=null;this.heading=null;this.message='Phone compass is off';this.open=false;this.onOrientation=e=>this.orientation(e);}
+
+ connectedCallback(){this.render();this.tick=0;this.timer=setInterval(()=>{if(this.heading&&Date.now()-this.heading.time>5000){this.heading=null;this.message='Compass signal lost';this.refresh();}if(++this.tick%30===0)this.refresh();},1000);}
+
+ disconnectedCallback(){clearInterval(this.timer);this.stopCompass();}
+
+ set config(value){this.data=value;this.refresh();}
+
+ stopCompass(){window.removeEventListener('deviceorientationabsolute',this.onOrientation);window.removeEventListener('deviceorientation',this.onOrientation);clearTimeout(this.sensorTimer);this.listening=false;}
+
+ async compass(){if(this.listening){this.stopCompass();this.heading=null;this.message='Phone compass is off';return this.refresh();}try{if(!isSecureContext)throw Error('Use the HTTPS Studio or secure HA address for phone compass.');if(!window.DeviceOrientationEvent)throw Error('This browser does not provide a compass.');if(DeviceOrientationEvent.requestPermission&&await DeviceOrientationEvent.requestPermission()!=='granted')throw Error('Compass permission was not granted.');this.listening=true;this.message='Waiting for compass · hold your phone flat';window.addEventListener('deviceorientationabsolute',this.onOrientation);window.addEventListener('deviceorientation',this.onOrientation);this.sensorTimer=setTimeout(()=>{if(!this.heading){this.message='No compass reading. Your browser or HA app may not expose this sensor.';this.refresh();}},5000);}catch(e){this.message=e.message;}this.refresh();}
+
+ orientation(e){if(!this.data?.context)return;if(Math.abs(e.beta||0)>55||Math.abs(e.gamma||0)>55){this.heading=null;this.message='Hold your phone flat for a reliable heading';this.refresh();return;}let magnetic;if(Number.isFinite(e.webkitCompassHeading)&&e.webkitCompassHeading>=0){if(e.webkitCompassAccuracy<0||e.webkitCompassAccuracy>35){this.heading=null;this.message='Move away from metal and recalibrate your phone compass';this.refresh();return;}magnetic=e.webkitCompassHeading;}else if(e.absolute&&Number.isFinite(e.alpha))magnetic=360-e.alpha;else return;
+
+  try{const c=this.data.context,decl=window.HomeMagnetism.model(new Date()).point([c.latitude,c.longitude,(c.elevation||0)/1000]).decl;this.heading={value:HomeSky.wrap(magnetic+decl+(screen.orientation?.angle||0)),time:Date.now()};this.message='Estimated true heading · magnetic sensor corrected with WMM2025';}catch{this.heading=null;this.message='True-heading correction unavailable for this date.';}this.refresh();
+
+ }
+
+ refresh(){if(!this.shadowRoot.querySelector('.toggle'))return this.render();this.update();}
+
+ render(){this.shadowRoot.innerHTML=`<style>:host{display:block;font:13px/1.4 system-ui;color:#e1efec}*{box-sizing:border-box}button,input{font:inherit;color:inherit;background:#20323a;border:1px solid #57717a;border-radius:8px;padding:9px;min-height:42px}button{cursor:pointer}.toggle{display:flex;flex-direction:column;align-items:center;gap:0;width:104px;padding:6px;background:#152830f5;box-shadow:0 2px 10px #0005}.compass-rose{display:block;width:88px;height:88px;overflow:visible}.compass-label{font-size:12px;font-weight:700}.details-label{font-size:10px;color:#b4d3d5}.phone-reading{font-size:10px;color:#88efd0}.phone-reading[hidden]{display:none}.panel{position:absolute;right:0;top:100%;background:#12232af5;border:1px solid #526b74;border-radius:12px;margin-top:6px;padding:14px;width:310px;max-width:calc(100vw - 40px);max-height:min(65vh,var(--sky-panel-height,65vh));overflow:auto;box-shadow:0 8px 24px #0008}.panel[hidden]{display:none}h3{margin:0 0 8px;font-size:15px}label{display:block;margin:9px 0}input{width:100%}.row{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.row button{flex:1}p{margin:8px 0;color:#adc2c7;font-size:12px}.dial{width:100%;height:195px}td{padding:5px 3px;border-bottom:1px solid #2d424b}table{width:100%;font-size:12px}td:last-child{text-align:right}.position{display:grid;grid-template-columns:1fr 1fr;gap:10px}.position b{display:block;font-size:18px}.elevation{height:6px;background:#33464d;position:relative;margin:8px 0}.elevation:after{content:'';position:absolute;left:50%;height:10px;top:-2px;border-left:1px solid #e1efec}.elevation i{position:absolute;width:8px;height:12px;top:-3px;background:currentColor}.axis{display:flex;justify-content:space-between;font-size:10px}small{font-size:11px;color:#aac0c7}</style><button class="toggle" title="True north and sky at home" aria-label="North & sky" aria-expanded="false"><span class="compass-label">True north</span><svg class="compass-rose" viewBox="-60 -60 120 120" role="img" aria-label="True north relative to the floor plan"><circle r="34" fill="#1c333c" stroke="#64828a"/><path d="M0 -31V31M-31 0H31" stroke="#38555f"/><g class="north-needle"><path d="M0 -29L-9 12L0 6L9 12Z" fill="#96edda" stroke="#d8fff5" stroke-width="1.5"/><path d="M0 6V23" stroke="#91b6bd" stroke-width="2"/></g>${["N","E","S","W"].map((label,i)=>`<text class="cardinal" data-bearing="${i*90}" text-anchor="middle" dominant-baseline="central" font-size="${i===0?20:14}" font-weight="${i===0?800:500}" fill="${i===0?"#effffb":"#b1cbd2"}">${label}</text>`).join("")}<g class="phone-needle" visibility="hidden"><path d="M0 -31L-5 -21L5 -21Z" fill="#ffdc82"/></g></svg><span class="phone-reading" hidden></span><span class="details-label">Sky & compass ▾</span></button><section class="panel" hidden><h3>Sky at home</h3><label>Date & time at home<input type="datetime-local" class="date"></label><div class="row"><button class="now">Now</button><button class="compass">Use phone compass</button></div><p class="sensor"></p><div class="sky"></div><label class="bearing-field">Top of drawing · true bearing °<input type="number" class="bearing" min="0" max="359.9" step="0.1"></label><p class="alignment"></p><small>Azimuth is clockwise from true north. Elevation: −90° below, 0° horizon, +90° overhead. Events use HA’s home location and time zone; terrain and buildings are not included.</small></section>`;
+
+  this.shadowRoot.querySelector('.toggle').onclick=()=>{this.open=!this.open;this.update();};this.shadowRoot.querySelector('.now').onclick=()=>{this.date=null;this.update();};this.shadowRoot.querySelector('.compass').onclick=()=>this.compass();this.shadowRoot.querySelector('.date').onchange=e=>{if(e.target.value&&this.data?.context){this.date=HomeSky.localDate(e.target.value,this.data.context.time_zone);this.update();}};this.shadowRoot.querySelector('.bearing').onchange=e=>{const n=+e.target.value;if(Number.isFinite(n)&&n>=0&&n<360)this.data?.onBearing?.(n);else e.target.value=this.data?.bearing??0;};this.addEventListener('pointerdown',e=>e.stopPropagation());this.addEventListener('wheel',e=>e.stopPropagation());this.update();
+
+ }
+
+ update(){const parentHeight=this.parentElement?.clientHeight;if(parentHeight)this.style.setProperty('--sky-panel-height',Math.max(140,parentHeight-155)+'px');const d=this.data||{},bearing=d.bearing??0,rotation=d.rotation||0,root=this.shadowRoot;root.querySelector('.panel').hidden=!this.open;root.querySelector('.toggle').setAttribute('aria-expanded',String(this.open));const north=HomeSky.wrap(rotation-bearing);root.querySelector('.north-needle').setAttribute('transform',`rotate(${north})`);root.querySelector('.compass-rose').setAttribute('aria-label',`True north points ${Math.round(north)} degrees clockwise from screen up`);for(const label of root.querySelectorAll('.cardinal')){const a=(+label.dataset.bearing+north)*Math.PI/180;label.setAttribute('x',Math.sin(a)*47);label.setAttribute('y',-Math.cos(a)*47);}const phone=root.querySelector('.phone-needle');phone.setAttribute('visibility',this.heading?'visible':'hidden');if(this.heading)phone.setAttribute('transform',`rotate(${HomeSky.wrap(this.heading.value+north)})`);const reading=root.querySelector('.phone-reading');reading.hidden=!this.heading;reading.textContent=this.heading?`Phone ${Math.round(this.heading.value)}° true`:'';root.querySelector('.sensor').textContent=this.heading?`${Math.round(this.heading.value)}° true · ${Math.round(HomeSky.wrap(this.heading.value-bearing))}° clockwise from drawing top. ${this.message}`:this.message;root.querySelector('.compass').textContent=this.listening?'Stop compass':'Use phone compass';const input=root.querySelector('.bearing');if(root.activeElement!==input)input.value=bearing;input.disabled=!d.onBearing;root.querySelector('.alignment').textContent=d.calibration||'Set the true bearing of the top edge of the unrotated drawing.';
+
+ if(!d.context||!Number.isFinite(d.context.latitude)||!Number.isFinite(d.context.longitude)){root.querySelector('.sky').textContent=d.error||'Reading HA home location…';return;}
+
+ const date=this.date||new Date(),zone=d.context.time_zone||'UTC';if(root.activeElement!==root.querySelector('.date'))root.querySelector('.date').value=HomeSky.dateInput(date,zone);if(!this.open)return;
+
+ const s=HomeSky.snapshot(date,d.context),angle=b=>HomeSky.wrap(b-bearing+rotation),xy=(b,r)=>[140+Math.sin(angle(b)*Math.PI/180)*r,100-Math.cos(angle(b)*Math.PI/180)*r];
+
+ const dot=(b,r,color,text)=>{const [x,y]=xy(b,r);return `<circle cx="${x}" cy="${y}" r="5" fill="${color}"/><text x="${x+8}" y="${y+4}" fill="${color}" font-size="10">${text}</text>`;};
+
+ const cardinal=['N','E','S','W'].map((v,i)=>{const[x,y]=xy(i*90,86);return `<text x="${x}" y="${y+4}" text-anchor="middle" fill="#c8dbdd" font-size="11">${v}</text>`;}).join('');
+
+ const current=(p,color,name)=>`<div style="color:${color}">${name}<b>${Math.round(p.azimuth)}°</b><small>Elevation ${p.altitude.toFixed(1)}°${p.altitude<0?' · below horizon':''}</small><div class="elevation"><i style="left:${(p.altitude+90)/180*100}%"></i></div><div class="axis"><span>−90°</span><span>0°</span><span>+90°</span></div></div>`;
+
+ root.querySelector('.sky').innerHTML=`<svg class="dial" viewBox="0 0 280 200" aria-label="Sun and moon direction relative to the floor plan"><circle cx="140" cy="100" r="73" fill="#192e37" stroke="#49636c"/><circle cx="140" cy="100" r="36.5" fill="none" stroke="#344c56" stroke-dasharray="3 3"/><text x="145" y="97" fill="#7c9ba5" font-size="9">90°</text><text x="145" y="61" fill="#7c9ba5" font-size="9">45°</text><text x="145" y="25" fill="#7c9ba5" font-size="9">0°</text>${cardinal}${s.events.filter(e=>/rise|set/i.test(e.label)).map(e=>dot(e.azimuth,73,/Moon/.test(e.label)?'#afc3ff':'#d8ab54',e.label)).join('')}${dot(s.sun.azimuth,73*(1-Math.max(0,s.sun.altitude)/90),'#ffd26e','Sun')}${dot(s.moon.azimuth,73*(1-Math.max(0,s.moon.altitude)/90),'#bfccff','Moon')}${this.heading?dot(this.heading.value,60,'#88efd0','Phone'):''}</svg><div class="position">${current(s.sun,'#ffd26e','Sun')}${current(s.moon,'#bfccff','Moon')}</div><p>Moon illuminated: ${Math.round(s.moon.illumination*100)}% · ${safe(zone)}</p><table aria-label="Sky events">${s.events.map(e=>`<tr><td>${e.label}</td><td>${new Intl.DateTimeFormat('en-GB',{timeZone:zone,hour:'2-digit',minute:'2-digit'}).format(e.date)}</td><td>${Math.round(e.azimuth)}°</td></tr>`).join('')}</table>${!s.events.some(e=>e.label==='Moonrise')?'<p>No moonrise during this home calendar day.</p>':''}${!s.events.some(e=>e.label==='Moonset')?'<p>No moonset during this home calendar day.</p>':''}`;
+
+ }
+
+}
+
+if(!customElements.get('home-sky'))customElements.define('home-sky',HomeSkyWidget);
+
+})();
+

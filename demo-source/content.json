@@ -1,0 +1,101 @@
+{
+  "slug": "layout-studio",
+  "title": "Layout Studio",
+  "summary": "A visual floor-plan editor for drawing rooms, setting driving dimensions and arranging furniture. The NAS edition also connects that plan to Home Assistant: devices belong to rooms, room tiles show conditions, and the same layout becomes an interactive control surface. This repository includes the generic standalone editor; the connected NAS implementation remains in the private source backup. The manual distinguishes the two so a reader knows what will actually work in each edition.",
+  "features": [
+    [
+      "Rooms and walls",
+      "Edit outlines, add internal walls, rename rooms and move name labels separately.",
+      "Both editions"
+    ],
+    [
+      "Driving dimensions",
+      "Select facing walls and enter their separation; geometry changes to match. Existing horizontal/vertical relationships are retained.",
+      "Both"
+    ],
+    [
+      "Collinear walls and room locks",
+      "Align wall runs, then lock a finished room’s dimensions. Conflicting constraints produce an Overdefined error.",
+      "Both"
+    ],
+    [
+      "Furniture",
+      "Place furniture, adjust its size and rotation, and mirror asymmetric shapes.",
+      "Both"
+    ],
+    [
+      "Map navigation",
+      "Zoom, fit and rotate the map; choose Auto, Desktop or Mobile interface mode. View rotation does not change the room dimensions.",
+      "Both"
+    ],
+    [
+      "Devices and Device Sheet",
+      "Read HA devices, place markers, choose icons and rename records; markers may be outside room boundaries.",
+      "Connected NAS"
+    ],
+    [
+      "Room conditions and detail views",
+      "Position editable room tiles for readings such as temperature and humidity, and open the room detail controls.",
+      "Connected NAS"
+    ],
+    [
+      "Automations and Buttons",
+      "Separate editors for automation triggers/conditions/actions and per-press button assignments.",
+      "Connected NAS"
+    ],
+    [
+      "HA floor plan",
+      "Control devices and move their markers back into the shared layout; mobile gestures depend on the installed HA card version.",
+      "Connected NAS"
+    ]
+  ],
+  "workflows": [
+    [
+      "Tour the workspace",
+      [
+        "Open the plan and locate the mode controls, map canvas and selection inspector. Choose Desktop, Mobile or Auto to suit your screen.",
+        "Use the fit/reset view control to see the complete plan. Zoom or rotate the view before selecting a small object. These controls change the camera, not the dimensions.",
+        "Select one room to inspect it. Select furniture to see its own dimensions and orientation. Clear the selection before starting a different operation."
+      ]
+    ],
+    [
+      "Set the distance between two walls",
+      [
+        "Enter Edit rooms and choose Between walls / Select two walls. Select the complete first wall run, then the facing parallel wall.",
+        "Choose which wall is the reference. Use Swap reference when the other side should stay fixed. Enter the required gap in centimetres and apply it.",
+        "Check the updated outline and neighboring rooms. The dimension drives geometry; typing a number is not merely adding a text label.",
+        "If Overdefined appears, inspect existing driving dimensions, locked rooms and collinear relationships. Release or edit the conflicting constraint, then retry. Do not add a second incompatible dimension over the first.",
+        "When the room is correct, select Lock room dimensions. Unlock it deliberately before a later shape or size change. A locked room can still be renamed, translated and furnished."
+      ]
+    ],
+    [
+      "Furnish a room and keep a portable copy",
+      [
+        "Select a furniture type, add it, then use the inspector to set width, depth and rotation. Mirror a handed sofa or similar item when needed.",
+        "Move the furniture on the canvas. For several objects, box-select them and check the selection before dragging. In the connected editor, selected device markers belong to the move as well.",
+        "Move the room name if it obscures furniture. Its label position is independent of the room outline.",
+        "Choose Export JSON to retain an editable copy. Use Open layout to restore that file. An exported image is a picture, not an editable backup."
+      ]
+    ],
+    [
+      "Place and maintain HA devices — connected edition",
+      [
+        "Open Devices and refresh the HA list. Use the unplaced-device filter to find devices that do not yet have a marker.",
+        "Select a device, enter placement mode and tap the intended point on the plan. Review the marker before saving its position; on a phone, zoom first instead of trying to hit a tiny room.",
+        "Choose a representative icon and review the room assignment. A marker outside all rooms is allowed; do not assume it has changed the HA area.",
+        "Use Device Sheet to edit friendly names. Distinguish multiple entities of one physical device from actual duplicate integrations; do not delete entities just because their names look similar.",
+        "Save to NAS and inspect the HA-sync result. A successful NAS save and a successful HA update are separate outcomes; investigate a reported HA error before assuming both finished."
+      ]
+    ],
+    [
+      "Use the plan in Home Assistant — connected edition",
+      [
+        "Open the Floor Plan dashboard. Tap a device to open the controls associated with that physical device.",
+        "Tap a room condition tile to enter its room view, then use the room navigation to move to another room or return to the full plan. Missing humidity means the room needs an available humidity entity, not a fabricated reading.",
+        "Use the map’s move-device mode before dragging a marker to another room. Save the placement and confirm that Layout Studio shows it after refresh.",
+        "Use the explicit refresh control when the card is stale. Rotate/zoom the view with visible controls; supported mobile builds also accept two-finger gestures."
+      ]
+    ]
+  ],
+  "limits": "The standalone package has no working NAS login, HA discovery/sync, device sheet, automation publishing or live environmental readings. This guide documents those connected workflows for the hosted installation, not as capabilities of the standalone download. A clean HA installation and real-phone gestures have not been revalidated in this documentation update."
+}

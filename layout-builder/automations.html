@@ -1,0 +1,56 @@
+<section id="automations-dialog" class="automation-dialog" role="tabpanel" aria-labelledby="studio-automations-tab" hidden>
+
+  <header class="auto-header"><div><div class="eyebrow">Your home, on autopilot</div><h2 id="automation-title">Automations</h2></div><button class="button" id="auto-close" type="button">Back to floor plan</button></header>
+
+  <p class="auto-intro">Choose when something happens, any conditions, and what your devices should do.</p>
+
+ <p class="subtle"><a href="https://example.invalid/media-remotes/home" target="_blank" rel="noopener">Open Remotes in HA ↗</a> · Choose an Android TV action below to control a paired TV.</p>
+
+  <div id="auto-status" role="status" class="auto-status"></div>
+
+  <div class="auto-toolbar"><button class="button primary" id="auto-new" type="button">+ New automation</button><button class="button" id="auto-show-suggestions" type="button">Templates &amp; suggestions</button><button class="button" id="auto-refresh" type="button">Refresh from HA</button><button class="button" id="auto-list-toggle" type="button">My automations</button><span id="auto-draft-status" role="status"></span></div>
+
+  <div class="auto-workspace">
+
+    <aside class="auto-library"><h3>Saved automations</h3><p id="auto-library-count" class="subtle"></p><p class="auto-button-note"><span id="auto-button-count"></span> <a href="#buttons" id="auto-open-buttons">Open Buttons</a></p><label class="field">Find an automation<input id="auto-library-search" type="search" placeholder="Search automations…"></label><div id="auto-list"></div><a href="https://homeassistant.example.invalid/config/automation/dashboard" target="_blank" rel="noopener" class="ha-link">Open HA automation dashboard ↗</a></aside>
+
+    <form id="auto-form" hidden>
+
+      <div class="auto-editor-toolbar"><div class="segmented" aria-label="Automation editor mode"><button id="auto-simple" type="button">Simple</button><button id="auto-advanced" type="button">Advanced</button></div><button class="button" id="auto-duplicate" type="button">Duplicate automation</button><button class="button" id="auto-revert" type="button">Discard edits</button></div>
+
+      <p id="auto-mode-help" class="subtle"></p>
+
+      <label class="field">Automation name<input id="auto-name" required maxlength="100" placeholder="e.g. Turn on the fan when it gets humid"></label>
+
+      <p id="auto-source-note" class="subtle"></p><a id="auto-native-link" class="ha-link" target="_blank" rel="noopener" hidden>Open this automation in HA ↗</a>
+
+      <section id="auto-native-editor" hidden><h3>Full HA configuration</h3><p class="subtle">This rule uses HA’s full configuration. Device triggers, templates, blueprints and action branches are kept intact. Edit the JSON here, or use HA’s visual editor above. The name and enabled setting below take precedence when saving.</p><label class="field">HA configuration (JSON)<textarea id="auto-native-config" rows="20" spellcheck="false"></textarea></label></section>
+
+      <div id="auto-visual-editor">
+
+      <label class="field auto-advanced-only">Description <small>optional</small><textarea id="auto-description" maxlength="500" rows="2" placeholder="What this automation is for"></textarea></label>
+
+      <section class="auto-step"><h3><span>1</span> When</h3><p>Any one of these triggers starts the automation.</p><div id="auto-trigger"></div><button class="button auto-advanced-only" id="auto-add-trigger" type="button">+ Add another trigger</button></section>
+
+      <section class="auto-step"><h3><span>2</span> Only if <small>optional</small></h3><label class="field auto-advanced-only">Condition matching<select id="auto-condition-mode"><option value="all">All conditions must be true</option><option value="any">Any condition can be true</option></select></label><div id="auto-conditions"></div><button class="button" id="auto-add-condition" type="button">+ Add condition</button></section>
+
+      <section class="auto-step"><h3><span>3</span> Devices &amp; actions</h3><p>Actions run in the order shown.</p><div id="auto-actions"></div><button class="button auto-advanced-only" id="auto-add-action" type="button">+ Add another action</button><button class="button auto-advanced-only" id="auto-add-delay" type="button">+ Add delay</button></section>
+
+      <section class="auto-step auto-advanced-only"><h3>Execution options</h3><label class="field">If triggered while already running<select id="auto-run-mode"><option value="single">Single — ignore the new trigger</option><option value="restart">Restart — stop and start again</option><option value="queued">Queued — run in order</option><option value="parallel">Parallel — allow simultaneous runs</option></select></label><label class="field" id="auto-max-field">Maximum active / queued runs<input id="auto-max-runs" type="number" min="2" max="20" step="1" required value="10"></label><p class="subtle">Queued and parallel modes allow up to 20 runs. Delays pause only this automation.</p></section>
+
+      </div>
+
+      <section class="auto-summary"><h3>Your automation</h3><p id="auto-summary"></p><p id="auto-timezone"></p><label class="auto-enable"><input id="auto-enabled" type="checkbox"> Enable this automation after saving</label></section>
+
+      <p id="auto-error" class="ha-error" role="alert" hidden></p><button class="button primary auto-save" id="auto-save" type="submit">Save automation to HA</button><p class="subtle">New automations and duplicates start paused. Device actions run only when an enabled automation is triggered.</p>
+
+    </form><div id="auto-welcome" class="auto-empty"><h3>Start with a template</h3><p>Pick a routine, edit its devices, times and conditions, then save to HA. Every new draft starts paused.</p><div class="auto-template-tabs" role="group" aria-label="Suggestion library"><button class="button" id="auto-template-tab" type="button" aria-pressed="true">Templates</button><button class="button" id="auto-home-tab" type="button" aria-pressed="false">For your home</button></div><label class="field" id="auto-category-field">Template category<select id="auto-template-category"><option value="">All categories</option><option>Lighting</option><option>Curtains</option><option>Air &amp; comfort</option><option>Presence</option><option>Plant care</option></select></label><p id="auto-template-help" class="subtle"></p><div id="auto-suggestions"></div></div>
+
+  </div>
+
+</section>
+
+
+
+<dialog id="auto-discard-dialog" class="dialog" aria-labelledby="auto-discard-title"><h2 id="auto-discard-title">Discard unsaved edits?</h2><p>Your saved automation stays unchanged. Only the current unsaved edits will be discarded.</p><div class="dialog-actions"><button class="button" id="auto-keep-editing" type="button">Keep editing</button><button class="button danger" id="auto-confirm-discard" type="button">Discard changes</button></div></dialog>
+

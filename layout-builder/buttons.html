@@ -1,0 +1,44 @@
+<section id="buttons-panel" class="buttons-panel" role="tabpanel" aria-labelledby="studio-buttons-tab" hidden>
+
+ <div class="auto-header"><div><div class="eyebrow">Make every press useful</div><h2>Buttons & remotes</h2><p>Choose what happens on each press. Supported presses come directly from Home Assistant.</p></div><button class="button" id="buttons-refresh">Refresh from HA</button></div>
+
+ <p class="subtle">Assign lights, dehumidifiers, saved curtain presets, media controls and HA scripts to single, double or hold presses. <a href="https://example.invalid/media-remotes/home" target="_blank" rel="noopener">Open Remotes in HA ↗</a></p>
+
+ <p id="buttons-actions-summary" class="subtle"></p>
+
+ <p id="buttons-status" class="auto-status" role="status">Reading buttons…</p>
+
+ <label class="field buttons-picker">Button device<select id="buttons-device" aria-label="Button device"></select></label>
+
+ <p id="buttons-device-info" class="subtle"></p><div id="buttons-presses"></div>
+
+ <p class="subtle">Press assignments live here. Advanced assignments keep their full HA configuration in this tab.</p>
+
+</section>
+
+<dialog id="button-edit-dialog" class="dialog button-edit" aria-labelledby="button-edit-title">
+
+ <form id="button-edit-form"><div class="auto-header"><h2 id="button-edit-title">Assign a press</h2><button class="button" type="button" id="button-edit-close">Close</button></div>
+
+ <p id="button-edit-device" class="subtle"></p>
+
+ <div id="button-simple-editor"><p>Run these actions in order when you press the button.</p>
+
+ <details class="button-shortcuts" open><summary>Quick actions & saved curtain presets</summary><label class="field">Room for quick actions<select id="button-shortcut-room" aria-label="Room for quick actions"></select></label><div id="button-shortcuts" class="button-shortcut-grid"></div><p class="subtle">Adds an editable step with the devices listed below. Saved presets use their own HA targets. Nothing runs until you save, enable and press the button.</p></details>
+
+ <div id="button-action-list"></div><button type="button" id="button-add-action" class="button">+ Add action</button>
+
+ <section id="button-restore-section" class="button-shortcuts" hidden><label class="auto-enable"><input type="checkbox" id="button-restore">Double press restores previous states</label><p id="button-restore-info" class="subtle"></p><p class="subtle">Runs entirely in Home Assistant. Single press remembers available devices, then runs this sequence. Double press stops remaining steps and restores once. Newer HA commands take priority: if another automation turns a device off, it stays off—even if it was already off. Other devices return to their saved states.</p><p class="subtle">Each single press replaces the saved states. They clear when HA restarts or scenes reload. Existing double-press assignments are protected.</p></section></div>
+
+ <section id="button-native-editor" hidden><p>Conditions, multiple triggers and action branches are preserved. Edit the full configuration below or use HA’s visual editor.</p><a id="button-native-link" class="ha-link" target="_blank" rel="noopener" hidden>Open this assignment in HA ↗</a><label class="field">Assignment name<input id="button-native-name" maxlength="100"></label><label class="field">HA configuration (JSON)<textarea id="button-native-config" rows="16" spellcheck="false"></textarea></label></section>
+
+ <label class="auto-enable"><input id="button-enabled" type="checkbox">Enable this press assignment in HA</label>
+
+ <p class="subtle">New assignments start paused. Enable when you are ready to use the button.</p>
+
+ <p id="button-edit-error" role="alert"></p><div id="button-discard" hidden><p>You have unsaved changes.</p><button type="button" id="button-discard-confirm" class="button">Discard changes and close</button></div>
+
+ <button class="button primary auto-save" id="button-save" type="submit">Save assignment to HA</button></form>
+
+</dialog>
+

@@ -1,0 +1,24 @@
+<section id="device-sheet-panel" class="device-sheet" role="tabpanel" aria-labelledby="studio-sheet-tab" hidden>
+
+ <header class="sheet-page-header"><div><div class="eyebrow">Your home inventory</div><h2>Device Sheet</h2><p>Live HA devices, rooms, and names in one place.</p></div><button class="button" id="sheet-refresh" type="button">Refresh from HA</button></header>
+
+ <p id="sheet-status" role="status"></p>
+
+ <nav class="sheet-subtabs" aria-label="Device Sheet pages"><button class="button primary" data-sheet-view="devices" type="button">Live devices</button><button class="button" data-sheet-view="reference" type="button">Workbook notes</button></nav>
+
+ <section id="sheet-live">
+
+  <div class="sheet-filterbar"><label class="field">Find a device<input id="sheet-search" type="search" placeholder="Name, room, model…"></label><label class="field">Show<select id="sheet-filter"><option value="all">All physical device records</option><option value="placed">Placed on floor plan</option><option value="unplaced">Not placed yet</option><option value="unassigned">No HA room assigned</option></select></label></div>
+
+  <p id="sheet-count" class="subtle"></p><p class="subtle">Edit a name, then press Enter or leave the field to save it to the NAS, HA and floor plan. Entity IDs stay unchanged. This list refreshes every 30 seconds while open.</p>
+
+  <p id="sheet-error" class="ha-error" role="alert" hidden></p>
+
+  <div class="sheet-table-wrap"><table class="device-sheet-table"><thead><tr><th scope="col">Device name</th><th scope="col">HA room</th><th scope="col">Model</th><th scope="col">Availability</th><th scope="col">Floor plan</th></tr></thead><tbody id="sheet-device-rows"></tbody></table></div>
+
+ </section>
+
+ <section id="sheet-reference" hidden><p class="subtle">Preserved from the former Google workbook. These planning notes are a dated reference; use Live devices for current HA names and availability, and Automations for Studio rules.</p><label class="field">Workbook page<select id="sheet-reference-tab"></select></label><div class="sheet-table-wrap" id="sheet-reference-content"></div><a id="sheet-old-link" class="ha-link" href="#" target="_blank" rel="noopener" hidden>Open deprecated Google workbook ↗</a></section>
+
+</section>
+

@@ -1,0 +1,24 @@
+<dialog id="device-placement" class="placement-dialog" aria-labelledby="placement-title">
+
+  <header class="placement-header"><div><div class="eyebrow" id="placement-step">Choose a room</div><h2 id="placement-title">Place device</h2></div><button class="button" id="placement-cancel" type="button">Cancel</button></header>
+
+  <section id="placement-rooms"><p>Which room is this device in?</p><div id="placement-room-list"></div></section>
+
+  <section id="placement-position" hidden>
+
+    <div class="placement-room-bar"><strong id="placement-room-name"></strong><button class="button" id="placement-icon" type="button" aria-label="Choose device icon">Icon</button><button class="button" id="placement-change-room" type="button">Change room</button></div>
+
+    <p class="placement-instruction">Drag the map under the pin, or tap a spot. Pinch to zoom.</p>
+
+    <div id="placement-map"><svg id="placement-plan" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Room preview for device placement"></svg><div class="placement-pin" aria-hidden="true"><span id="placement-glyph">◉</span></div></div>
+
+    <div class="placement-view-tools"><button type="button" class="button" id="placement-zoom-out" aria-label="Zoom out of room">−</button><button type="button" class="button" id="placement-fit">Fit room</button><button type="button" class="button" id="placement-zoom-in" aria-label="Zoom into room">+</button><span>Fine adjust · 5 cm</span></div>
+
+    <div class="placement-nudge" aria-label="Fine position adjustment"><button type="button" class="button" data-placement-nudge="-5,0" aria-label="Move pin left 5 cm">←</button><button type="button" class="button" data-placement-nudge="0,-5" aria-label="Move pin up 5 cm">↑</button><button type="button" class="button" data-placement-nudge="0,5" aria-label="Move pin down 5 cm">↓</button><button type="button" class="button" data-placement-nudge="5,0" aria-label="Move pin right 5 cm">→</button></div>
+
+    <footer class="placement-footer"><p id="placement-status" role="status"></p><button type="button" class="button primary" id="placement-confirm">Place here</button><small>The position is saved only when you confirm.</small></footer>
+
+  </section>
+
+</dialog>
+

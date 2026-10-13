@@ -1,0 +1,20 @@
+<dialog id="device-icon-dialog" class="device-icon-dialog" aria-labelledby="device-icon-title">
+
+  <header class="device-icon-header"><div><div class="eyebrow">Device appearance</div><h2 id="device-icon-title">Choose an icon</h2><p id="device-icon-device"></p></div><button type="button" class="button" id="device-icon-cancel">Cancel</button></header>
+
+  <div class="device-icon-filters">
+
+    <label class="field device-icon-search">Find an icon<input id="device-icon-search" type="search" placeholder="Soundbar, curtain, button, 3D printer…" autocomplete="off"></label>
+
+    <label class="field device-icon-category">Category<select id="device-icon-category"><option value="">All categories</option></select></label>
+
+  </div>
+
+  <p id="device-icon-count" class="device-icon-count" role="status" aria-live="polite"></p>
+
+  <div id="device-icon-options" class="device-icon-options" role="group" aria-label="Device icons"></div>
+
+  <footer class="device-icon-footer"><div id="device-icon-preview" role="status"></div><button type="button" class="button primary" id="device-icon-apply">Use icon</button><small>Shows on this floor plan in Studio and Home Assistant.</small></footer>
+
+</dialog>
+
