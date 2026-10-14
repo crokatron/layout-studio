@@ -4,7 +4,9 @@
 
 A visual floor-plan editor for drawing rooms, setting driving dimensions and arranging furniture. The NAS edition also connects that plan to Home Assistant: devices belong to rooms, room tiles show conditions, and the same layout becomes an interactive control surface. This repository includes the generic standalone editor; the connected NAS implementation remains in the private source backup. The manual distinguishes the two so a reader knows what will actually work in each edition.
 
-**Private preview · not published.**
+[Publication checks and remaining limits](docs/PUBLICATION.md)
+
+**Public source preview · MIT for original contributions.**
 
 [Open the visual manual](docs/USER-MANUAL.md) · [Download the self-contained demo](demo.html) · [Release notes](CHANGELOG.md)
 
