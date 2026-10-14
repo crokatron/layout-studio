@@ -1,5 +1,7 @@
 # Layout Studio
 
+**Maintaining this project? [Start here](docs/START-HERE.md) · [Detailed handover](docs/HANDOVER.md)**
+
 A visual floor-plan editor for drawing rooms, setting driving dimensions and arranging furniture. The NAS edition also connects that plan to Home Assistant: devices belong to rooms, room tiles show conditions, and the same layout becomes an interactive control surface. This repository includes the generic standalone editor; the connected NAS implementation remains in the private source backup. The manual distinguishes the two so a reader knows what will actually work in each edition.
 
 **Private preview · not published.**
